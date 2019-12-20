@@ -25,10 +25,11 @@ operate f program i = do
 run :: Program -> Int -> Int -> Maybe Program 
 run program noun verb = run' 0 (initialise program noun verb) where 
     run' i program = case program ^? ix i of
-        Nothing -> Just program
-        Just 99 -> Just program
-        Just 1 -> operate (+) program i >>= run' (i + 4)
-        Just 2 -> operate (*) program i >>= run' (i + 4)
+            Nothing -> Just program
+            Just 99 -> Just program
+            Just 1 -> step (+)
+            Just 2 -> step (*)
+        where step f = operate f program i >>= run' (i + 4) 
 
 solve :: Int -> IO (Maybe Int)
 solve target = do 
